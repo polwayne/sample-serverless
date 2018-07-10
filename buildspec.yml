@@ -1,4 +1,4 @@
- build:
-    commands:
-      - npm install -g serverless
-      - serverless deploy --stage dev -v
+build:
+  commands:
+    - npm install -g serverless
+    - serverless deploy --stage dev -v
