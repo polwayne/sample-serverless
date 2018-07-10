@@ -18,9 +18,6 @@ pipeline {
 				
 		
 	 	stage('Production') {
-			when {
-			   env.BRANCH_NAME == 'master'	
-			}
 			steps {	
 			    parallel (
 				    'us-east-1' : {
