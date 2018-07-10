@@ -23,11 +23,9 @@ pipeline {
 	 	stage('Production') {
 			steps {	
 			    nodejs(nodeJSInstallationName: 'nodejs') {
-				    'us-east-1' : {
 					  sh 'serverless deploy --stage production --region us-east-1'  
 					  sh 'serverless invoke --stage production --region us-east-1 --function hello'
-				    }
-			}
+				}
 			}	
 		}
 		
