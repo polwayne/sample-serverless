@@ -4,7 +4,6 @@ pipeline {
 	stages {
 		stage('Unit test') {
 			steps {				
-				sh 'npm install -g serverless'
  			    sh 'serverless --help' // to ensure it is installed
 			}
 		}			
