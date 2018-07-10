@@ -31,8 +31,10 @@ pipeline {
 		
 		stage('Teardown') {
 			steps {				
+				nodejs(nodeJSInstallationName: 'nodejs') {
 				echo 'No need for DEV environment now, tear it down'
 				sh 'serverless remove --stage dev'	
+				}
 			}
 		}
 	 
