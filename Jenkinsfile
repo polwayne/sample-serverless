@@ -12,25 +12,22 @@ pipeline {
 		
 		stage('Integration test') {
 			steps {
-				sh 'serverless deploy --stage dev'
-				sh 'serverless invoke --stage dev --function hello'					
+				nodejs(nodeJSInstallationName: 'nodejs') {
+					sh 'serverless deploy --stage dev'
+					sh 'serverless invoke --stage dev --function hello'	
+				}				
 			}
 		}
 				
 		
 	 	stage('Production') {
 			steps {	
-			    parallel (
+			    nodejs(nodeJSInstallationName: 'nodejs') {
 				    'us-east-1' : {
 					  sh 'serverless deploy --stage production --region us-east-1'  
 					  sh 'serverless invoke --stage production --region us-east-1 --function hello'
-				    },
-				    'ap-southeast-2' : {
-					  sh 'serverless deploy --stage production --region ap-southeast-2'  
-					  sh 'serverless invoke --stage production --region ap-southeast-2 --function hello'  
 				    }
-				    
-		            )
+			}
 			}	
 		}
 		
