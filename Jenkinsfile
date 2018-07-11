@@ -32,7 +32,7 @@ pipeline {
 			when {branch "master"}
 			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
-						sh 'serverless deploy --stage int'
+						sh 'serverless deploy --stage prod'
 				}
 			}
 		}
