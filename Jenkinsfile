@@ -11,6 +11,9 @@ pipeline {
 		}			
 		
 		stage('Integration test') {
+			when {
+				branch "develop"
+			}
 			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
 					sh 'serverless deploy --stage dev'
