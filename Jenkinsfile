@@ -10,20 +10,40 @@ pipeline {
 			}
 		}			
 		
-		stage('Integration test') {
+		stage('Deploy dev branch') {
+			when {branch "develop"}
 			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
-					  script {
-					if(env.BRANCH_NAME == 'develop') {
 						sh 'serverless deploy --stage dev'
 						sh 'serverless invoke --stage dev --function hello'	
-					} else if(env.BRANCH_NAME == 'feature/*') {
+				}
+			}
+		}
+
+		stage('Deploy dev branch') {
+			when {branch "develop"}
+			steps {
+				nodejs(nodeJSInstallationName: 'nodejs') {
+						sh 'serverless deploy --stage dev'
+				}
+			}
+		}
+
+		stage('Deploy feature branch') {
+			when {branch "feature/*"}
+			steps {
+				nodejs(nodeJSInstallationName: 'nodejs') {
 						sh 'serverless deploy --stage int'
-					} else if(env.BRANCH_NAME == 'master'){
-						sh 'serverless deploy --stage production'
-					}
-					  }
-				}				
+				}
+			}
+		}
+
+		stage('Deploy master branch') {
+			when {branch "master"}
+			steps {
+				nodejs(nodeJSInstallationName: 'nodejs') {
+						sh 'serverless deploy --stage int'
+				}
 			}
 		}
 	 
