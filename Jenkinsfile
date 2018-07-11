@@ -9,16 +9,6 @@ pipeline {
                 }
 			}
 		}			
-		
-		stage('Deploy dev branch') {
-			when {branch "develop"}
-			steps {
-				nodejs(nodeJSInstallationName: 'nodejs') {
-						sh 'serverless deploy --stage dev'
-						sh 'serverless invoke --stage dev --function hello'	
-				}
-			}
-		}
 
 		stage('Deploy dev branch') {
 			when {branch "develop"}
