@@ -1,12 +1,11 @@
 pipeline {
 	agent any	 
-	
+
+	nodejs(nodeJSInstallationName: 'nodejs') {
 	stages {
 		stage('Unit test') {
 			steps {				
-				nodejs(nodeJSInstallationName: 'nodejs') {
                     sh 'serverless --help' // to ensure it is installed
-                }
 			}
 		}			
 		
@@ -15,29 +14,23 @@ pipeline {
 				branch "develop"
 			}
 			steps {
-				nodejs(nodeJSInstallationName: 'nodejs') {
 					sh 'serverless deploy --stage dev'
-					sh 'serverless invoke --stage dev --function hello'	
-				}				
+					sh 'serverless invoke --stage dev --function hello'				
 			}
 		}
 				
 		
 	 	stage('Production') {
 			steps {	
-			    nodejs(nodeJSInstallationName: 'nodejs') {
 					  sh 'serverless deploy --stage production --region us-east-1'  
 					  sh 'serverless invoke --stage production --region us-east-1 --function hello'
 				}
-			}	
 		}
 		
 		stage('Teardown') {
-			steps {				
-				nodejs(nodeJSInstallationName: 'nodejs') {
+			steps {			
 				echo 'No need for DEV environment now, tear it down'
 				sh 'serverless remove --stage dev'	
-				}
 			}
 		}
 	 
