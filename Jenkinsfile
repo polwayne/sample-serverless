@@ -1,36 +1,27 @@
 pipeline {
 	agent any	 
-
-	nodejs(nodeJSInstallationName: 'nodejs') {
+	
 	stages {
 		stage('Unit test') {
 			steps {				
+				nodejs(nodeJSInstallationName: 'nodejs') {
                     sh 'serverless --help' // to ensure it is installed
+                }
 			}
 		}			
 		
 		stage('Integration test') {
-			when {
-				branch "develop"
-			}
 			steps {
-					sh 'serverless deploy --stage dev'
-					sh 'serverless invoke --stage dev --function hello'				
-			}
-		}
-				
-		
-	 	stage('Production') {
-			steps {	
-					  sh 'serverless deploy --stage production --region us-east-1'  
-					  sh 'serverless invoke --stage production --region us-east-1 --function hello'
-				}
-		}
-		
-		stage('Teardown') {
-			steps {			
-				echo 'No need for DEV environment now, tear it down'
-				sh 'serverless remove --stage dev'	
+				nodejs(nodeJSInstallationName: 'nodejs') {
+					if(env.BRANCH_NAME == 'develop') {
+						sh 'serverless deploy --stage dev'
+						sh 'serverless invoke --stage dev --function hello'	
+					} else if(env.BRANCH_NAME == 'feature/*') {
+						sh 'serverless deploy --stage int'
+					} else if(env.BRANCH_NAME == 'master'){
+						sh 'serverless deploy --stage production'
+					}
+				}				
 			}
 		}
 	 
@@ -41,6 +32,5 @@ pipeline {
 	 		AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
 			AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
 	 }
-	}
 
 }
