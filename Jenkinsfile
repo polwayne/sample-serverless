@@ -13,6 +13,7 @@ pipeline {
 		stage('Integration test') {
 			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
+					  script {
 					if(env.BRANCH_NAME == 'develop') {
 						sh 'serverless deploy --stage dev'
 						sh 'serverless invoke --stage dev --function hello'	
@@ -21,6 +22,7 @@ pipeline {
 					} else if(env.BRANCH_NAME == 'master'){
 						sh 'serverless deploy --stage production'
 					}
+					  }
 				}				
 			}
 		}
