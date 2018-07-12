@@ -5,7 +5,7 @@ pipeline {
 		stage('Unit test') {
 			steps {				
 				nodejs(nodeJSInstallationName: 'nodejs') {
-                    sh 'serverless --help' // to ensure it is installed
+                    sh 'npm test' 
                 }
 			}
 		}			
