@@ -12,7 +12,7 @@ pipeline {
 		}			
 
 		stage('Deploy dev branch') {
-			when {branch "develop" || "feature"}
+			when {branch "develop"}
 			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
 						sh 'serverless deploy --stage dev'
@@ -21,6 +21,15 @@ pipeline {
 		}
 
 		stage('Deploy feature branch') {
+			when {branch "feature/*"}
+			steps {
+				nodejs(nodeJSInstallationName: 'nodejs') {
+						sh 'serverless deploy --stage dev'
+				}
+			}
+		}
+
+		stage('Deploy release branch') {
 			when {branch "release/*"}
 			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
