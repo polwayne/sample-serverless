@@ -5,7 +5,8 @@ pipeline {
 		stage('Unit test') {
 			steps {				
 				nodejs(nodeJSInstallationName: 'nodejs') {
-                    sh 'npm test' 
+                    sh 'npm install' 
+					sh 'npm test' 
                 }
 			}
 		}			
