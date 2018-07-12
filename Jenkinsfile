@@ -5,35 +5,44 @@ pipeline {
 		stage('Unit test') {
 			steps {				
 				nodejs(nodeJSInstallationName: 'nodejs') {
-                    sh 'serverless --help' // to ensure it is installed
+                    sh 'npm install' 
+					sh 'npm test' 
                 }
 			}
 		}			
-		
-		stage('Integration test') {
+
+		stage('Deploy dev branch') {
+			when {branch "develop"}
 			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
-					sh 'serverless deploy --stage dev'
-					sh 'serverless invoke --stage dev --function hello'	
-				}				
+						sh 'serverless deploy --stage dev'
+				}
 			}
 		}
-				
-		
-	 	stage('Production') {
-			steps {	
-			    nodejs(nodeJSInstallationName: 'nodejs') {
-					  sh 'serverless deploy --stage production --region us-east-1'  
-					  sh 'serverless invoke --stage production --region us-east-1 --function hello'
-				}
-			}	
-		}
-		
-		stage('Teardown') {
-			steps {				
+
+		stage('Deploy feature branch') {
+			when {branch "feature/*"}
+			steps {
 				nodejs(nodeJSInstallationName: 'nodejs') {
-				echo 'No need for DEV environment now, tear it down'
-				sh 'serverless remove --stage dev'	
+						sh 'serverless deploy --stage dev'
+				}
+			}
+		}
+
+		stage('Deploy release branch') {
+			when {branch "release/*"}
+			steps {
+				nodejs(nodeJSInstallationName: 'nodejs') {
+						sh 'serverless deploy --stage int'
+				}
+			}
+		}
+
+		stage('Deploy master branch') {
+			when {branch "master"}
+			steps {
+				nodejs(nodeJSInstallationName: 'nodejs') {
+						sh 'serverless deploy --stage prod'
 				}
 			}
 		}

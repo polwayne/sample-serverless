@@ -1,0 +1,35 @@
+{
+  "name": "sample-serverless",
+  "version": "1.0.0",
+  "description": "Builds on the sample app as created by https://serverless.com/",
+  "main": "handler.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^23.4.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "html",
+      "text"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polwayne/sample-serverless.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polwayne/sample-serverless/issues"
+  },
+  "homepage": "https://github.com/polwayne/sample-serverless#readme"
+}
